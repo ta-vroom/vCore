@@ -7,11 +7,3 @@ PKGS=(
 )
 
 DNF "${PKGS[@]}"
-
-systemctl enable \
-  greenboot-healthcheck.service \
-  greenboot-status.service \
-  greenboot-loading-message.service \
-  greenboot-grub2-set-counter.service \
-  greenboot-grub2-set-success.service \
-  greenboot-rpm-ostree-grub2-check-fallback.service
