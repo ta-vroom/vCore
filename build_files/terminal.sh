@@ -28,7 +28,7 @@ PKGS=(
    buildah
 )
 
-cp -r /terminfo /usr/share/terminfo
+cp -r /ctx/terminfo /usr/share/terminfo
 
 PKGS+=( "${RUST[@]}" )
 
