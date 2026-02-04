@@ -92,12 +92,12 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     ostree container commit
 
 #11 Install nix 
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=cache,dst=/var/cache \
-    --mount=type=cache,dst=/var/log \
-    --mount=type=tmpfs,dst=/tmp \
-    bash /ctx/nix.sh && \
-    ostree container commit
+#RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+#    --mount=type=cache,dst=/var/cache \
+#    --mount=type=cache,dst=/var/log \
+#    --mount=type=tmpfs,dst=/tmp \
+#    bash /ctx/nix.sh && \
+#    ostree container commit
 
 #11 Install and run booster
 # RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
