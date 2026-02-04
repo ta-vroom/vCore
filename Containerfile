@@ -106,11 +106,3 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
 #     --mount=type=tmpfs,dst=/tmp \
 #     bash /ctx/booster.sh && \
 #     ostree container commit
-
-#12 Cleanup
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=cache,dst=/var/cache \
-    --mount=type=cache,dst=/var/log \
-    --mount=type=tmpfs,dst=/tmp \
-    bash /ctx/nix.sh && \
-    ostree container commit
