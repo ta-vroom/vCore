@@ -7,3 +7,5 @@ PKGS=(
 )
 
 DNF "${PKGS[@]}"
+
+systemctl enable greenboot-healthcheck.service greenboot-set-rollback-trigger.service
