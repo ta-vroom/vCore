@@ -17,22 +17,22 @@ jobs:
           UCORE=$(
             skopeo inspect docker://ghcr.io/ublue-os/ucore-minimal:stable-zfs --format \
               '{{ index .Labels "org.opencontainers.image.version"}}')
-          echo "ucore_version=$UCORE" >> "$GITHUB_OUTPUT"
+          echo "ucore=$UCORE" >> "$GITHUB_OUTPUT"
       - name: vCore Version
         id: vcore
         run: |
          VCORE=$(
             skopeo inspect docker://ghcr.io/ta-vroom/vcore:latest --format \
               '{{ index .Labels "org.opencontainers.image.version"}}')
-          echo vcore=$VCORE >> "$GITHUB_OUTPUT"
+          echo "vcore=$VCORE" >> "$GITHUB_OUTPUT"
       - name: Compare
         id: compare
         run: |
           if [ "${{ steps.ucore.outputs.ucore }}" != \
                "${{ steps.vcore.outputs.vcore }}" ]; then
-            echo "update=true" >> "$GITHUB_OUTPUT"
+            echo "diff=true" >> "$GITHUB_OUTPUT"
           else
-            echo "update=false" >> "$GITHUB_OUTPUT"
+            echo "diff=false" >> "$GITHUB_OUTPUT"
           fi
 
   trigger-build:
