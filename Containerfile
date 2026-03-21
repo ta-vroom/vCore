@@ -11,98 +11,29 @@ COPY cosign.pub /signing
 #0 Base Image
 FROM ${REPO_SOURCE}/${REPO_OWNER}/${BASE_IMAGE}:${TAG_VERSION}
 
-#1 Remove unneeded packages
+# Run all container build scripts
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
-    bash /ctx/remove-packages.sh && \
-    ostree container commit
+    set -e; \
+    for script in \
+        remove-packages \
+        tweaks \
+        greenboot \
+        man \
+        cockpit \
+        samba \
+        terminal \
+        fusion-packages \
+        media \
+        github \
+    ; do \
+        echo "=== Running $script.sh ==="; \
+        bash /ctx/$script.sh; \
+        ostree container commit; \
+    done
 
-#2 Configure tweaks
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=cache,dst=/var/cache \
-    --mount=type=cache,dst=/var/log \
-    --mount=type=tmpfs,dst=/tmp \
-    bash /ctx/tweaks.sh && \
-    ostree container commit
-
-#3 Install and enable greenboot
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=cache,dst=/var/cache \
-    --mount=type=cache,dst=/var/log \
-    --mount=type=tmpfs,dst=/tmp \
-    bash /ctx/greenboot.sh && \
-    ostree container commit
-
-#4 Install man
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=cache,dst=/var/cache \
-    --mount=type=cache,dst=/var/log \
-    --mount=type=tmpfs,dst=/tmp \
-    bash /ctx/man.sh && \
-    ostree container commit
-
-#5 Install Cockpit
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=cache,dst=/var/cache \
-    --mount=type=cache,dst=/var/log \
-    --mount=type=tmpfs,dst=/tmp \
-    bash /ctx/cockpit.sh && \
-    ostree container commit
-
-#6 Install Samba
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=cache,dst=/var/cache \
-    --mount=type=cache,dst=/var/log \
-    --mount=type=tmpfs,dst=/tmp \
-    bash /ctx/samba.sh && \
-    ostree container commit
-
-#7 Install Terminal Programs
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=cache,dst=/var/cache \
-    --mount=type=cache,dst=/var/log \
-    --mount=type=tmpfs,dst=/tmp \
-    bash /ctx/terminal.sh && \
-    ostree container commit
-
-#8 Install Packages in the RPMFusion repos
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=cache,dst=/var/cache \
-    --mount=type=cache,dst=/var/log \
-    --mount=type=tmpfs,dst=/tmp \
-    bash /ctx/fusion-packages.sh && \
-    ostree container commit
-
-#9 Install media-based packages
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=cache,dst=/var/cache \
-    --mount=type=cache,dst=/var/log \
-    --mount=type=tmpfs,dst=/tmp \
-    bash /ctx/media.sh && \
-    ostree container commit
-
-#10 Install github-based packages
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=cache,dst=/var/cache \
-    --mount=type=cache,dst=/var/log \
-    --mount=type=tmpfs,dst=/tmp \
-    bash /ctx/github.sh && \
-    ostree container commit
-
-#11 Install nix 
-#RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-#    --mount=type=cache,dst=/var/cache \
-#    --mount=type=cache,dst=/var/log \
-#    --mount=type=tmpfs,dst=/tmp \
-#    bash /ctx/nix.sh && \
-#    ostree container commit
-
-#11 Install and run booster
-# RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-#     --mount=type=cache,dst=/var/cache \
-#     --mount=type=cache,dst=/var/log \
-#     --mount=type=tmpfs,dst=/tmp \
-#     bash /ctx/booster.sh && \
-#     ostree container commit
+# Optional/Commented out scripts
+# bash /ctx/nix.sh && ostree container commit
+# bash /ctx/booster.sh && ostree container commit
