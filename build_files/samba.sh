@@ -5,6 +5,7 @@ PKGS=(
    samba
    samba-usershares
    avahi
+   avahi-tools
    wsdd
    nss-mdns
 )
