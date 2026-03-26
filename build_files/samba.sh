@@ -6,7 +6,7 @@ PKGS=(
    samba-usershares
    avahi
    wsdd
-   nss
+   nss-mdns
 )
 
 DNF "${PKGS[@]}"
